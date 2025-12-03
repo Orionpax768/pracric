@@ -72,7 +72,7 @@ namespace Computingdevice
         {
             if (power <= 0)
                 throw new ArgumentException("Невозможно рассчитать эффективность: мощность недопустима.");
-            return speed / power;
+            return Math.Round(speed / power, 2);
         }
 
         public void Output()
@@ -90,7 +90,7 @@ namespace Computingdevice
                 try
                 {
                     Console.Clear();
-                    Console.Title = "Практическая работа №16";
+                    Console.Title = "Практическая работа №17";
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("Здравствуйте!");
                     Console.WriteLine("Работа с вычислительным устройством (Нажмите клавишу Enter):");
