@@ -21,19 +21,10 @@ namespace Computingdevice
         {
             Console.WriteLine("Это абстрактное вычислительное устройство.");
         }
-
+        ~ComputingDeviceBase() {}
         public abstract void Input();
 
         protected abstract double CalculateEfficiency();
-
-        protected void GetInfo()
-        {
-            Console.WriteLine($"Информация о вычислительном устройстве" +
-                $"\nНазвание устройства: {name}" +
-                $"\nМощность: {power} Вт" +
-                $"\nСкорость: {speed} операций/сек" +
-                $"\nЭнергоэффективность: {CalculateEfficiency()} операций/Вт");
-        }
     }
 
     class ComputingDevice : ComputingDeviceBase
@@ -45,6 +36,7 @@ namespace Computingdevice
 
         public override void Input()
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("Название устройства: ");
             string inputName = Console.ReadLine();
             if (String.IsNullOrWhiteSpace(inputName))
@@ -52,15 +44,25 @@ namespace Computingdevice
                 throw new ArgumentException("Название не может быть пустым.");
             }
             name = inputName;
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
             Console.Write("Мощность (Вт): ");
             string powerStr = Console.ReadLine();
+            if (String.IsNullOrWhiteSpace(powerStr)) 
+            {
+                throw new Exception("Мощность не может быть пустой");
+            }
             if (!Double.TryParse(powerStr, out double p) || p <= 0)
             {
                 throw new ArgumentException("Мощность должна быть положительным числом.");
             }
             power = p;
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("Скорость (операций/сек): ");
             string speedStr = Console.ReadLine();
+            if (String.IsNullOrWhiteSpace(speedStr)) 
+            {
+                throw new Exception("Скорость не может быть пустой!");
+            }
             if (!UInt32.TryParse(speedStr, out uint s) || s == 0)
             {
                 throw new ArgumentException("Скорость должна быть целым положительным числом.");
@@ -68,11 +70,28 @@ namespace Computingdevice
             speed = s;
         }
 
+        ~ComputingDevice()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Вычислительное устройство ВЗОРВАЛОСЬ!!! \nГлавное, не переживайте!)))");
+            Console.ReadKey();
+        }
+
         protected override double CalculateEfficiency()
         {
             if (power <= 0)
                 throw new ArgumentException("Невозможно рассчитать эффективность: мощность недопустима.");
             return Math.Round(speed / power, 2);
+        }
+
+        protected void GetInfo()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine($"Информация о вычислительном устройстве" +
+                $"\nНазвание устройства: {name}" +
+                $"\nМощность: {power} Вт" +
+                $"\nСкорость: {speed} операций/сек" +
+                $"\nЭнергоэффективность: {CalculateEfficiency()} операций/Вт");
         }
 
         public void Output()
@@ -93,11 +112,11 @@ namespace Computingdevice
                     Console.Title = "Практическая работа №17";
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("Здравствуйте!");
-                    Console.WriteLine("Работа с вычислительным устройством (Нажмите клавишу Enter):");
+                    Console.WriteLine("Работа с вычислительным устройством:");
                     ComputingDevice device = new ComputingDevice();
                     device.Input();
                     device.Output();
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
                     Console.WriteLine("\nВыберите действие:");
                     Console.WriteLine("1 - Новый поиск");
                     Console.WriteLine("0 - Выйти из программы");
